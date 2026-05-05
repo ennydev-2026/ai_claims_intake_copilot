@@ -1,15 +1,18 @@
 from __future__ import annotations
 
 import logging
+import os
 
 from app.domain.schemas import InputClaim, PolicyContext, StructuredClaim
 from app.providers.gemini_provider import GeminiProvider
+from app.providers.ollama_provider import OllamaProvider
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 
 
 def _fallback_structured_claim(claim: InputClaim, policy_context: PolicyContext | None = None) -> StructuredClaim:
-    """Deterministic extraction when Gemini is unavailable (e.g. quota)."""
+    """Deterministic extraction when all providers are unavailable."""
     ctype = claim.claim_type or (policy_context.product_line if policy_context else None)
     damage = (claim.message or "").strip() or (claim.subject or "").strip() or None
     docs = ["photos"] if claim.attachments else []
@@ -27,8 +30,22 @@ def _fallback_structured_claim(claim: InputClaim, policy_context: PolicyContext 
 
 
 class ExtractionService:
-    def __init__(self, provider: GeminiProvider | None = None) -> None:
-        self.provider = provider or GeminiProvider()
+    def __init__(self, provider: GeminiProvider | OllamaProvider | None = None) -> None:
+        if provider is not None:
+            self.provider = provider
+        elif settings.ollama_enabled:
+            # Try to use Ollama first if enabled
+            try:
+                self.provider = OllamaProvider()
+                # Test if Ollama is actually accessible
+                test_response = self.provider.extract_claim("Test prompt")
+                logger.info("Successfully initialized Ollama provider")
+            except Exception:
+                logger.warning("Ollama not accessible, falling back to Gemini")
+                self.provider = GeminiProvider()
+        else:
+            # Default to Gemini when Ollama is not enabled
+            self.provider = GeminiProvider()
 
     def build_prompt(self, claim: InputClaim, policy_context: PolicyContext | None = None) -> str:
         attachments = ", ".join(claim.attachments) if claim.attachments else "none"
@@ -60,7 +77,7 @@ class ExtractionService:
             extracted = self.provider.extract_claim(self.build_prompt(claim, policy_context))
         except Exception as exc:
             logger.warning(
-                "Gemini extraction failed (%s); using heuristic fallback: %s",
+                "Provider extraction failed (%s); using heuristic fallback: %s",
                 type(exc).__name__,
                 exc,
             )

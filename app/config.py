@@ -18,6 +18,11 @@ class Settings:
     gemini_model_extract: str = os.getenv("GEMINI_MODEL_EXTRACT", "gemini-2.5-flash")
     gemini_model_summary: str = os.getenv("GEMINI_MODEL_SUMMARY", "gemini-2.5-flash")
 
+    ollama_enabled: bool = os.getenv("OLLAMA_ENABLED", "false").lower() == "true"
+    ollama_host: str = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    ollama_model_extract: str = os.getenv("OLLAMA_MODEL_EXTRACT", "llama3.2:1b")
+    ollama_model_summary: str = os.getenv("OLLAMA_MODEL_SUMMARY", "llama3.2:1b")
+
     database_url: str = os.getenv("DATABASE_URL", "sqlite+pysqlite:///./claims.db")
     mock_java_base_url: str = os.getenv("MOCK_JAVA_BASE_URL", "http://localhost:8081")
     dashboard_api_base_url: str = os.getenv("DASHBOARD_API_BASE_URL", "http://localhost:8000")
