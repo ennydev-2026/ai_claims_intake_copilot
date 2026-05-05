@@ -1,16 +1,14 @@
-version: "3.9"
-
 services:
   db:
+    restart: unless-stopped
     image: postgres:16-alpine
     environment:
       POSTGRES_DB: claimsdb
       POSTGRES_USER: claims
       POSTGRES_PASSWORD: claims
-    ports:
-      - "5432:5432"
     volumes:
       - claims_db_data:/var/lib/postgresql/data
+    # Postgres is not published on the host (avoids port clashes); services use db:5432 on the network.
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U claims -d claimsdb"]
       interval: 5s
@@ -18,12 +16,13 @@ services:
       retries: 20
 
   mock-java:
+    restart: unless-stopped
     build:
       context: ./mock-java-service
-    ports:
-      - "8081:8081"
+    # Host ports optional; use docker-compose.dev.yml for local 8081.
 
   api:
+    restart: unless-stopped
     build:
       context: .
     env_file:
@@ -36,10 +35,10 @@ services:
         condition: service_healthy
       mock-java:
         condition: service_started
-    ports:
-      - "8000:8000"
+    # Host port optional; use docker-compose.dev.yml for local 8000.
 
   dashboard:
+    restart: unless-stopped
     build:
       context: ./dashboard
     environment:

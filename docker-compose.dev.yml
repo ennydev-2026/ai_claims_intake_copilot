@@ -1,0 +1,12 @@
+# Local development: publish DB, API, and mock Java on the host.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+services:
+  db:
+    ports:
+      - "5432:5432"
+  mock-java:
+    ports:
+      - "8081:8081"
+  api:
+    ports:
+      - "8000:8000"

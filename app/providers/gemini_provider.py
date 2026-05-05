@@ -44,6 +44,34 @@ Payload:
 """
 
 
+def _fallback_analyst_summary(payload: SummaryInput) -> str:
+    """Short Spanish template when Gemini summarization fails (e.g. 429 quota)."""
+    ext = payload.structured_extraction
+    pol = payload.policy_context
+    missing = ", ".join(payload.missing_items) if payload.missing_items else "ninguno"
+    flags = ", ".join(payload.validation_flags) if payload.validation_flags else "ninguna"
+    pol_line = ""
+    if pol:
+        pol_line = (
+            f"Póliza {pol.policy_number}: estado {pol.status}, "
+            f"cobertura {'activa' if pol.coverage_active else 'inactiva o sin cobertura'}. "
+        )
+    next_action = (
+        "Completar documentación faltante y validar cobertura operativa."
+        if payload.missing_items or (pol and not pol.coverage_active)
+        else "Continuar revisión según prioridad asignada."
+    )
+    damage = (ext.damage_description or "sin detalle operativo en extracción")[:200]
+    return (
+        "[Resumen automático — Gemini no disponible] "
+        f"Siniestro {payload.claim_id}, prioridad {payload.priority.level}. "
+        f"{pol_line}"
+        f"Tipo siniestro: {ext.claim_type or '—'}. Daño / hecho: {damage}. "
+        f"Pendientes: {missing}. Señales: {flags}. "
+        f"Siguiente paso sugerido: {next_action}"
+    )
+
+
 class GeminiProvider(BaseLLMProvider):
     def __init__(self) -> None:
         if not settings.gemini_api_key or settings.gemini_api_key == "REPLACE_WITH_YOUR_GEMINI_API_KEY":
@@ -73,9 +101,17 @@ class GeminiProvider(BaseLLMProvider):
 
     def summarize_claim(self, payload: SummaryInput) -> str:
         payload_json = json.dumps(payload.model_dump(mode="json"), ensure_ascii=False, indent=2)
-        response = self.client.models.generate_content(
-            model=self.model_summary,
-            contents=SUMMARY_PROMPT_TEMPLATE.format(payload=payload_json),
-        )
-        text = (getattr(response, "text", "") or "").strip()
-        return text or "No fue posible generar el resumen para el analista."
+        try:
+            response = self.client.models.generate_content(
+                model=self.model_summary,
+                contents=SUMMARY_PROMPT_TEMPLATE.format(payload=payload_json),
+            )
+            text = (getattr(response, "text", "") or "").strip()
+            return text or _fallback_analyst_summary(payload)
+        except Exception as exc:
+            logger.warning(
+                "Gemini summarize failed (%s); using template fallback: %s",
+                type(exc).__name__,
+                exc,
+            )
+            return _fallback_analyst_summary(payload)

@@ -43,14 +43,29 @@ GEMINI_API_KEY=your_real_key_here
 ```
 
 ## Run with Docker Compose
+
+Default compose only publishes the **dashboard** on the host (for nginx/production). For local debugging with API, DB, and mock on known ports, use the dev override:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+```
+
+Production-style (dashboard only on host `8501`):
+
 ```bash
 docker compose up --build
 ```
 
-Endpoints:
+Endpoints (with **dev** override):
 - API: `http://localhost:8000`
 - Dashboard: `http://localhost:8501`
 - Mock Java: `http://localhost:8081`
+
+Endpoints (default / server): dashboard only on host at `http://localhost:8501` (API and mock are reachable on the Docker network only).
+
+## Production deployment
+
+See [`deploy/README.md`](deploy/README.md) for a generic nginx + TLS outline. Replace placeholders with your own hostnames and paths; keep secrets out of git (use `.env` on the server only).
 
 ## Main API routes
 - `GET /health`
