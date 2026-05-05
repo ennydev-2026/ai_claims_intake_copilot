@@ -1,0 +1,16 @@
+{
+  "claim_id": "CLM-005",
+  "channel": "email",
+  "customer_name": "Pedro Sánchez",
+  "policy_number": null,
+  "claim_type": "hogar",
+  "incident_date": "2026-05-01",
+  "reported_at": "2026-05-04T09:00:00",
+  "subject": "Daño por agua",
+  "message": "Se rompió un caño y se mojó el piso del living. No encuentro el número de póliza.",
+  "attachments": [],
+  "contact": {
+    "email": "pedro@example.com",
+    "phone": null
+  }
+}

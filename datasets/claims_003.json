@@ -1,0 +1,16 @@
+{
+  "claim_id": "CLM-003",
+  "channel": "webform",
+  "customer_name": "Carlos Ruiz",
+  "policy_number": "POL-1003",
+  "claim_type": "robo",
+  "incident_date": "2026-05-03",
+  "reported_at": "2026-05-04T08:15:00",
+  "subject": "Robo parcial",
+  "message": "Me robaron una rueda del auto durante la noche. Aún no hice la denuncia policial.",
+  "attachments": [],
+  "contact": {
+    "email": null,
+    "phone": "+5491122222222"
+  }
+}

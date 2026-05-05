@@ -1,0 +1,18 @@
+{
+  "claim_id": "CLM-004",
+  "channel": "email",
+  "customer_name": "María López",
+  "policy_number": "POL-1004",
+  "claim_type": "incendio",
+  "incident_date": "2026-05-03",
+  "reported_at": "2026-05-03T23:00:00",
+  "subject": "Incendio en cocina",
+  "message": "Hubo un incendio menor en la cocina de mi casa. Hay humo y daños en muebles. Necesito saber cómo seguir.",
+  "attachments": [
+    "foto_cocina.jpg"
+  ],
+  "contact": {
+    "email": "maria@example.com",
+    "phone": "+5491133333333"
+  }
+}

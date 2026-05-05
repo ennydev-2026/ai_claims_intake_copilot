@@ -1,0 +1,18 @@
+{
+  "claim_id": "CLM-009",
+  "channel": "webform",
+  "customer_name": "Elena Castro",
+  "policy_number": "POL-1009",
+  "claim_type": "hogar",
+  "incident_date": "2026-05-02",
+  "reported_at": "2026-05-04T14:00:00",
+  "subject": "Daños eléctricos",
+  "message": "Después de un pico de tensión dejaron de funcionar la heladera y el microondas.",
+  "attachments": [
+    "foto_tablero.jpg"
+  ],
+  "contact": {
+    "email": "elena@example.com",
+    "phone": "+5491166666666"
+  }
+}

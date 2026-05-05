@@ -1,0 +1,19 @@
+{
+  "claim_id": "CLM-001",
+  "channel": "email",
+  "customer_name": "Juan Pérez",
+  "policy_number": "POL-1001",
+  "claim_type": "auto",
+  "incident_date": "2026-05-01",
+  "reported_at": "2026-05-04T10:30:00",
+  "subject": "Choque leve en Palermo",
+  "message": "Ayer tuve un choque leve en Palermo. El paragolpes delantero quedó dañado. Adjunto fotos, pero todavía no tengo presupuesto del taller.",
+  "attachments": [
+    "foto_frente.jpg",
+    "foto_lateral.jpg"
+  ],
+  "contact": {
+    "email": "juan@example.com",
+    "phone": null
+  }
+}

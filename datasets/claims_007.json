@@ -1,0 +1,18 @@
+{
+  "claim_id": "CLM-007",
+  "channel": "email",
+  "customer_name": "Rosa Díaz",
+  "policy_number": "POL-1007",
+  "claim_type": "robo",
+  "incident_date": "2026-05-02",
+  "reported_at": "2026-05-04T11:20:00",
+  "subject": "Robo total del vehículo",
+  "message": "Me robaron el auto completo al salir del trabajo. Ya hice la denuncia. Es urgente.",
+  "attachments": [
+    "denuncia.pdf"
+  ],
+  "contact": {
+    "email": "rosa@example.com",
+    "phone": "+5491155555555"
+  }
+}

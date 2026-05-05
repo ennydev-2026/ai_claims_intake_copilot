@@ -1,0 +1,16 @@
+{
+  "claim_id": "CLM-006",
+  "channel": "webform",
+  "customer_name": "Ana Morales",
+  "policy_number": "POL-1006",
+  "claim_type": "auto",
+  "incident_date": "2026-05-10",
+  "reported_at": "2026-05-04T12:00:00",
+  "subject": "Fecha confusa del choque",
+  "message": "Tuve un choque ayer pero por error puse otra fecha. El capot quedó muy dañado.",
+  "attachments": [],
+  "contact": {
+    "email": null,
+    "phone": "+5491144444444"
+  }
+}
