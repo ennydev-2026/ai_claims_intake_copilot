@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 from typing import Optional
 
 from ollama import Client
@@ -77,7 +76,7 @@ def _fallback_analyst_summary(payload: SummaryInput) -> str:
 
 class OllamaProvider(BaseLLMProvider):
     def __init__(self) -> None:
-        self.client = Client(host=os.getenv("OLLAMA_HOST", "http://localhost:11434"))
+        self.client = Client(host=settings.ollama_host)
         self.model_extract = settings.ollama_model_extract
         self.model_summary = settings.ollama_model_summary
 

@@ -42,6 +42,19 @@ Required:
 GEMINI_API_KEY=your_real_key_here
 ```
 
+### Dockerized project + Ollama on Mac host
+When `api` runs in Docker and Ollama runs on your Mac, do not use `localhost` as seen by the container.
+
+Use these `.env` values:
+```env
+OLLAMA_ENABLED=true
+OLLAMA_HOST=http://host.docker.internal:11434
+OLLAMA_MODEL_EXTRACT=llama3.2:1b
+OLLAMA_MODEL_SUMMARY=llama3.2:1b
+```
+
+Before starting compose, make sure Ollama is running on macOS (for example `ollama serve`, or Ollama Desktop active).
+
 ## Run with Docker Compose
 
 Default compose only publishes the **dashboard** on the host (for nginx/production). For local debugging with API, DB, and mock on known ports, use the dev override:
